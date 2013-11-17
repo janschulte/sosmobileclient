@@ -21,7 +21,6 @@ var ServiceController = (function() {
     this.stations.url = Helpers.generateStationsUrl(newServiceName);
     
     this.stations.fetch({'reset': true});
-    //Todo after sync event!! window.settings.set('lastStationUpdate', new Date().toLocaleString());
   };
   
   return ServiceController;

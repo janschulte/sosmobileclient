@@ -1,15 +1,13 @@
 var SettingsView = (function() {
-  
   return Backbone.View.extend({
-    el: $(document),
-
     events: {
       'click .expert': 'changeExpertMode',
-      'click .reset': 'reset'
+      'click .reset': 'reset',
+      'click .exit': 'exit',
+      'click .close-btn': 'close'
     },
 
     initialize: function(){
-      svMe = this;
       this.listenTo(this.model, 'change', this.render);
     },
 
@@ -20,7 +18,7 @@ var SettingsView = (function() {
       var settingsModalsTemplate = Handlebars.helpers.getTemplate('settingsModals');
       var settingsModalsHtml = settingsModalsTemplate(this.model.toJSON());
       
-      $('#settings-content').empty().html(listHtml);
+      this.$el.html(listHtml);
       this.updateExpertIcon();
 
       //modals
@@ -50,6 +48,16 @@ var SettingsView = (function() {
     reset: function(e) {
       e.preventDefault();
       Backbone.Mediator.publish('app:reset');
+    },
+
+    exit: function(e) {
+      e.preventDefault();
+      Backbone.Mediator.publish('app:exit');
+    },
+
+    close: function(e) {
+      console.log("close");
+      MfMobile.closeAllPanels();
     }
   });
 

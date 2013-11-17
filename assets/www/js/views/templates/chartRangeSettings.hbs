@@ -9,24 +9,18 @@
 
         <button class="custom-range-from-picker-btn btn btn-default big-btn">
           <i class="icon-step-backward"></i>
+          from:<br/>
           <span class="custom-range-from-label"></span> 
         </button>
 
         <button class="custom-range-till-picker-btn btn btn-default big-btn">
           <i class="icon-step-forward"></i>
+          till:<br/>
           <span class="custom-range-till-label"></span>
         </button>
+      </div>
 
-        <!--
-        or
-
-        <button class="preset-btn btn btn-default big-btn" data-preset-value="live">
-          <i class="icon-refresh"></i>
-          <span>live data</span>
-        </button>
-
-        -->
-
+      <div class="warnings">
       </div>
 
       <div class="panel-group" id="accordion">
@@ -38,7 +32,7 @@
               </a>
             </h4>
           </div>
-          <div id="collapseOne" class="panel-collapse collapse">
+          <div id="collapseOne" class="panel-collapse collapse in">
             <div class="panel-body">
               {{#each presets}}
                 <button class="btn btn-default multiline-button preset-btn" data-preset-value="{{value}}">

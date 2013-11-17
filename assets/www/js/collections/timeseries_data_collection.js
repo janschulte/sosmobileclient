@@ -4,6 +4,7 @@ var TimeseriesDataCollection = (function() {
 
     initialize: function() {
       this.listenTo(this, 'sync', this.triggerSync);
+      this.listenTo(this, 'change:synced', this.triggerSync);
     },
 
     //Backbone's collection-sync event is an "any is synced" - event - we need an "every is synced"
@@ -15,6 +16,13 @@ var TimeseriesDataCollection = (function() {
 
     everythingSynced: function() {
       return this.every(function(elem) {return elem.get('synced')});
+    },
+
+    abortAndReset: function() {
+      this.each(function(tsData) {
+        tsData.abort();
+      });
+      this.reset();
     }
 
   });

@@ -2,6 +2,9 @@ var ChartRangeSettingsView = (function() {
   return Backbone.View.extend({
     id: 'chart-range-settings',
     className: 'modal fade',
+    attributes: {
+      'data-backdrop': 'static'
+    },
     template: Handlebars.helpers.getTemplate('chartRangeSettings'),
     events: {
       'click .preset-btn': 'setPeset',
@@ -15,7 +18,6 @@ var ChartRangeSettingsView = (function() {
       "chart_range:custom_date:from:cancel": 'hidePicker',
       "chart_range:custom_date:till:cancel": 'hidePicker'
     },
-
 
     initialize: function() {
     },
@@ -104,6 +106,7 @@ var ChartRangeSettingsView = (function() {
       this.highlightCustomBtn('till', true);
       this.unhighlightPesetBtns();
       this.changeOkBtnState();
+      this.validateCustomDates();
 
       inst.destroy();
     },
@@ -119,8 +122,38 @@ var ChartRangeSettingsView = (function() {
       this.highlightCustomBtn('till', true);
       this.unhighlightPesetBtns();
       this.changeOkBtnState();
+      this.validateCustomDates();
 
       inst.destroy();
+    },
+
+    validateCustomDates: function() {
+      this.removeWarnings();
+
+      var from = moment(this.customFromDate);
+      var till = moment(this.customTillDate);
+
+      if (!this.customRangeSmallerThanOneYear()) {
+        this.$('.warnings').append('<div class="alert alert-danger"><i class="icon-warning-sign"></i> The selected timespan is greater than one year. The SOS standard does not support timespans greater than one year.</div>')
+      } else if (this.customRangeGreaterThanThreeMonth) {
+        this.$('.warnings').append('<div class="alert alert-warning"><i class="icon-warning-sign"></i> The selected timespan is greater than three months. This could affect loading times and zooming performance. Switch to static image mode if you face wonky behaviour.</div>')
+      }
+    },
+
+    customRangeSmallerThanOneYear: function() {
+      var from = moment(this.customFromDate);
+      var till = moment(this.customTillDate);
+      return (Math.abs(from.diff(till, 'years', true)) < 1)
+    },
+
+    customRangeGreaterThanThreeMonth: function() {
+      var from = moment(this.customFromDate);
+      var till = moment(this.customTillDate);
+      return (Math.abs(from.diff(till, 'months', true)) > 3) 
+    },
+
+    removeWarnings: function() {
+      this.$('.warnings').empty();
     },
 
     hidePicker: function() {
@@ -159,11 +192,13 @@ var ChartRangeSettingsView = (function() {
       this.presetSelected = true;
       this.customRangeOk = false;
       this.changeOkBtnState();
+
+      this.removeWarnings();
     },
 
     changeOkBtnState: function() {
       var btn = this.$('.confirm-range-btn');
-      if (this.customRangeOk || this.presetSelected) {
+      if ((this.customRangeOk  && this.customRangeSmallerThanOneYear()) || this.presetSelected) {
         btn.removeClass('disabled');
         btn.removeAttr('disabled', 'disabled');
       } else {
@@ -176,6 +211,10 @@ var ChartRangeSettingsView = (function() {
       e.preventDefault();
 
       if (this.customRangeOk) {
+        if (this.customRangeGreaterThanThreeMonth) {
+          Backbone.Mediator.publish('chart:view:switch:static');
+        }
+
         var span = Helpers.isoTimespanFromTill(this.customFromDate, this.customTillDate);
         this.model.set('timespan', span);
       } else if (this.presetSelected) {

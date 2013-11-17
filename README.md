@@ -1,10 +1,30 @@
 Mobile Sensor Web Client
 ========================
 
-This project is under development. The target is a mobile client for the Sensor Observation Network by [52north](http://52north.org/). You will be able to choose from a variety of sensors, add them to your current view and inspect the values.
+This project is released. The target is a mobile client for the Sensor Observation Network by [52north](http://52north.org/). You will be able to choose from a variety of sensors, add them to your current view and inspect the values.
 This project is attended at the [University of Hamburg](http://www.uni-hamburg.de), Germany, dep. [VSIS](http://vsis-www.informatik.uni-hamburg.de/?lang=en).
 
+## Download and install
+To install this app on your Anroid device, follow this link to the Play Store Entry:
+
+[https://play.google.com/store/apps/details?id=org.n52.sosmobileclient](https://play.google.com/store/apps/details?id=org.n52.sosmobileclient)
+
+You can also fork this repository and open the files as a Android project in your Eclpise ADT suite.
+To run the app in browser you need to exclude the Phonegap scripts in the index.html file. Then, just open the index.html in your Chrome Browser.
+
+
 ## Status 
+### 11/10/2013 (end of project)
+- Frameworks
+  - Upgrade of Phonegap
+- Features
+  - static/dynammic chart view
+  - Feedback on selecting time spans that are too big
+  - fixes buggy locate station feature
+  - gave up on browser - onyl mao is supported now
+  - splash screen and Android button support
+  - lots of bug fixes
+
 ### 9/20/2013
 - Frameworks
   - MobiScroll Datepicker for choosing the timespans "Android Style"
@@ -76,10 +96,10 @@ The UI will be Android-oriented. It consists of 3 main pages/panels:
 ![target l+f](https://raw.github.com/marfnk/sosmobileclient/master/target_app.PNG "Initially skeched Target look and feel")
 
 ## Frameworks
-1. [Phonegap 1.9.0](http://phonegap.com/) (Apache License Version 2.0)
+1. [Phonegap](http://phonegap.com/) (Apache License Version 2.0)
     is wrapper for HTML5 web apps, that bundles and desploys the code as native app for nearly every device. It also provides access to the native phone API to enable features like camera, geolocation and data storage.
 2. [JQuery 2.0.2](http://jquery.com/) (MIT Open Source License)
-    is the de-facto standard for client-side web apps. It is lightweight and provides an intuitive DOM manipulation API. It is an requirement for most of the libraries used in this project. JQuery Migration 1.2.1 is included.
+    is the de-facto standard for client-side web apps. It is lightweight and provides an intuitive DOM manipulation API. It is an requirement for most of the libraries used in this project.
 3. [Backbone.js 1.0.0](http://backbonejs.org/) (MIT Open Source License) and [underscore.js](http://underscorejs.org/)
     is a thin client-MVC framework which also handles the routing of the app. Since the Mobile SWC comes with no own server and only the [REST API](https://wiki.52north.org/bin/view/SensorWeb/SensorWebClientRESTInterface) there was a need for a flexible MVC-architecture style.
 4. [Bootstrap 3](http://getbootstrap.com/) (Apache License v2.0) Since Bootstrap has become flat, I'm glad to use it again. Not to mention its great JavaScript API.
@@ -123,7 +143,7 @@ Those frameworks were removed due to changes in requirements.
 
 
 ## MF-Mobile
-The MF mobile script is an ultra lightweight CSS and JQuery library that allows page oriented navigation with GPU enhancement through CSS3. It requires JQuery and LESS CSS. It is based upon an [codrops](http://tympanus.net/codrops/2013/05/07/a-collection-of-page-transitions/) example.
+The MF mobile script is an ultra lightweight CSS and JQuery library that allows page oriented navigation with GPU enhancement through CSS3. It requires JQuery and LESS CSS. It is based upon an [codrops](http://tympanus.net/codrops/2013/05/07/a-collection-of-page-transitions/) example. 
 
 Setup MF-Mobile by adding these lines to your HTML file.
 
@@ -155,12 +175,3 @@ Configure the CSS in the settings part of `mfmobile.css`:
     min-height: 300px; //best results with pixels
     max-height: 80%; //best result with percentage
     animation-duration: 0.4s !important; //duration of panel opening and closing as well as page navigation
-
-
-## How to build and run this app ##
-**Warning: This app is under development and not ready to use so far.**
-You can view the current version either in browser or as a native app on your Android phone.
-
-- To get it to run on your phone install the [Android ADT package](http://developer.android.com/sdk/installing/bundle.html), clone this repo and import it in your ADT Eclipse. Build it, connect your phone in debug mode to your PC and click run.
-- To simply view the app an your pc, download or clone this repo, navigate to (repo home)/assets/www and open the indx.html file. I prefer [Google Chrome](https://www.google.com/intl/de/chrome/browser/) since phonegap is build on the same engine. **Attention!** You can't load remote JSON this way due to browser restrictions. You have to set up an XAMPP/LAMPP/MAMPP Server and start your app via http:// protocol. (The file://-protocol is not supported by the SOS Server CORS.)
-

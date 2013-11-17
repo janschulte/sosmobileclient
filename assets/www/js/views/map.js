@@ -28,7 +28,7 @@ var MapView = (function() {
 
       var cloudmadeUrl = 'http://{s}.tile.cloudmade.com/BC9A493B41014CAABB98F0471D759707/997/256/{z}/{x}/{y}.png',
         cloudmadeAttribution = '&copy; OpenStreetMap &amp; Contributors',
-        cloudmade = L.tileLayer(cloudmadeUrl, {maxZoom: 17, attribution: cloudmadeAttribution}),
+        cloudmade = L.tileLayer(cloudmadeUrl, {maxZoom: 17, attribution: false}),
         latlng = L.latLng(50, 10);
       L.Icon.Default.imagePath = 'img';
 
@@ -41,8 +41,9 @@ var MapView = (function() {
       this.posBtn.html("<i class='icon-screenshot' id='posBtnIcon'></i>");
       
       var providerBtn = $("<a>").addClass('btn providerBtn btn-primary');
-      providerBtn.html("<i class='icon-cloud-download' id='provider-icon'></i>");
-      this.btnWrapper.prepend(providerBtn);
+      providerBtn.html("<i class='icon-folder-open' id='provider-icon'></i>");
+      this.btnWrapper.append("<br/>");
+      this.btnWrapper.append(providerBtn);
 
       this.btnWrapper.append(this.posBtn);
       this.$el.append(this.btnWrapper);
@@ -78,27 +79,27 @@ var MapView = (function() {
       this.deleteLocateStationMarker();
 
       var myIcon = L.icon({
-        iconUrl: 'img/hand45.png',
-        shadowUrl: null,
-        iconSize:     [40, 50], // size of the icon
-        shadowSize:   [0, 0], // size of the shadow
-        iconAnchor:   [35, 0], // point of the icon which will correspond to marker's location
-        shadowAnchor: [0, 0],  // the same for the shadow
+        iconUrl: 'img/marker-icon-red.png',
+        shadowUrl: 'img/marker-shadow.png',
+        iconSize:     [25, 41], // size of the icon
+        shadowSize:   [41, 41], // size of the shadow
+        iconAnchor:   [12, 41], // point of the icon which will correspond to marker's location
+        shadowAnchor: [12, 41],  // the same for the shadow
         popupAnchor:  [0, -40] // point from which the popup should open relative to the iconAnchor
       });
 
-      this.stationMarker = L.marker(position, { icon: myIcon });
+      this.stationMarker = L.marker(position, { icon: myIcon, zIndexOffset: 1000 });
 
       var popup = L.popup()
         .setLatLng(position)
-        .setContent("<h2>Station</h2>" + station.properties.label + "<p class='text-center'><button class='btn btn-xs btn-danger delete-marker-btn'>remove this info</button></p>")
+        .setContent("<h3><i class='icon-screenshot'></i> Station</h3>" + station.properties.label + "<p class='text-center'><button class='btn btn-xs btn-danger delete-marker-btn'>remove this info</button></p>")
         .openOn(this.map);
 
       this.stationMarker.bindPopup(popup);
       this.map.addLayer(this.stationMarker);
 
-      this.map.panTo(this.stationMarker.getLatLng(), {animate: true});
-      this.map.setZoom(16);
+      this.map.panTo(this.stationMarker.getLatLng(), {animate: false});
+      this.map.setZoom(14);
     },
 
     deleteLocateStationMarker: function() {
@@ -151,7 +152,7 @@ var MapView = (function() {
     },
 
     stationUpdateStart: function() {
-      $('#provider-icon').removeClass('icon-cloud-download');
+      $('#provider-icon').removeClass('icon-folder-open');
       $('#provider-icon').addClass('icon-spinner icon-spin');
     },
 
@@ -160,7 +161,7 @@ var MapView = (function() {
       $('#provider-icon').addClass('icon-ok');
       setTimeout(function() {
         $('#provider-icon').removeClass('icon-ok');
-        $('#provider-icon').addClass('icon-cloud-download');
+        $('#provider-icon').addClass('icon-folder-open');
       }, 750);
     }
   });
